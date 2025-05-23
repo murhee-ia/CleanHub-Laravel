@@ -14,7 +14,7 @@ class AuthenticationController extends Controller
             'full_name' => 'required|max:255',
             'user_name' => 'required|max:60',
             'email' => 'required|email|unique:users',
-            'password' => ['required', 'string', 'min:8', 'regex:/[A-Z]/'],
+            'password' => ['required','string','min:8','regex:/[A-Z]/','confirmed'],
             'remember' => 'boolean',
         ]);
 
@@ -26,10 +26,10 @@ class AuthenticationController extends Controller
             $user->password = $validated['password'];
             $user->save();
         } catch (\Throwable $error) {
-            return response(['error' => 'Failed to register user', $error], 500);
+            return response(['message' => 'Failed to register user', $error], 500);
         }
 
-        return response(['user' => $user], 201);
+        return response(['message' => 'Account has been succesfully created.'], 201);
     }
 
     public function loginUser (Request $request) {

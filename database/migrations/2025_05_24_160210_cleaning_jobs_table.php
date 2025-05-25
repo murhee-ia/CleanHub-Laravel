@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('full_address');
             $table->string('schedule');
             $table->string('payment');
-            $table->json('media_paths');
+            $table->json('media_paths')->nullable();
             $table->boolean('approved_status')->default(false);
             $table->boolean('application_status')->default(true);
             $table->boolean('rate_status')->default(false);

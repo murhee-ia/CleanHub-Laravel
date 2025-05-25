@@ -28,8 +28,13 @@ class Job extends Model
         'media_paths' => 'array',
     ];
 
-    public function creator()
+    public function recruiter()
     {
         return $this->belongsTo(User::class, 'recruiter_id');
+    }
+
+    public function job_category()
+    {
+        return $this->belongsTo(JobCategory::class, 'job_category_id');
     }
 }

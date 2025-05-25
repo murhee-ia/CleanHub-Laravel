@@ -22,7 +22,6 @@ class JobSeeder extends Seeder
             'full_address' => '123 Main St, Valencia, Negros Oriental, PH',
             'schedule' => 'Monday to Friday, 8am - 5pm',
             'payment' => '₱500 per day',
-            'media_paths' => json_encode(['media1.jpg', 'media2.jpg']),
             'approved_status' => true,
             'recruiter_id' => 1,
         ]);
@@ -36,7 +35,6 @@ class JobSeeder extends Seeder
             'full_address' => '456 New Road, Dumaguete City, Negros Oriental, PH',
             'schedule' => 'Saturday and Sunday, 9am - 6pm',
             'payment' => '₱800 per day',
-            'media_paths' => json_encode(['media3.jpg']),
             'approved_status' => true,
             'recruiter_id' => 1,
         ]);
@@ -50,7 +48,6 @@ class JobSeeder extends Seeder
             'full_address' => '789 Seaside Blvd, Bacong, Negros Oriental, PH',
             'schedule' => 'Flexible schedule, weekdays and weekends',
             'payment' => '₱700 per session',
-            'media_paths' => json_encode(['media4.jpg', 'media5.jpg']),
             'approved_status' => true,
             'recruiter_id' => 2,
         ]);

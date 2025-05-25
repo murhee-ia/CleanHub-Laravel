@@ -9,19 +9,18 @@ class JobController extends Controller
 {
     public function getTheJob(Request $request) {
         $jobID = $request->query('job_id');
-        $job = Job::with('recruiter')->findOrFail($jobID);
-        $job['category'] = $job->job_category->title;
+        $job = Job::with(['job_recruiter', 'job_category'])->findOrFail($jobID);
         $job = $job->toArray();
-        $job['recruiter'] = [
-            'id' => $job['recruiter']['id'],
-            'full_name' => $job['recruiter']['full_name'],
-            'user_name' => $job['recruiter']['user_name'],
-            'email' => $job['recruiter']['email'],
-            'profile_picture' => $job['recruiter']['profile_picture'],
+        $job['job_category'] = $job['job_category']['title'];
+        $job['job_recruiter'] = [
+            'id' => $job['job_recruiter']['id'],
+            'full_name' => $job['job_recruiter']['full_name'],
+            'user_name' => $job['job_recruiter']['user_name'],
+            'email' => $job['job_recruiter']['email'],
+            'profile_picture' => $job['job_recruiter']['profile_picture'],
         ];
-        unset($job['job_category']);
         unset($job['job_category_id']);
-        unset($job['recruiter_id']);
+        unset($job['job_recruiter_id']);
         return response()->json($job);
     }
 

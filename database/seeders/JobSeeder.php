@@ -23,7 +23,7 @@ class JobSeeder extends Seeder
             'schedule' => 'Monday to Friday, 8am - 5pm',
             'payment' => '₱500 per day',
             'approved_status' => true,
-            'recruiter_id' => 1,
+            'job_recruiter_id' => 1,
         ]);
 
         Job::create([
@@ -36,7 +36,7 @@ class JobSeeder extends Seeder
             'schedule' => 'Saturday and Sunday, 9am - 6pm',
             'payment' => '₱800 per day',
             'approved_status' => true,
-            'recruiter_id' => 1,
+            'job_recruiter_id' => 1,
         ]);
 
         Job::create([
@@ -49,7 +49,7 @@ class JobSeeder extends Seeder
             'schedule' => 'Flexible schedule, weekdays and weekends',
             'payment' => '₱700 per session',
             'approved_status' => true,
-            'recruiter_id' => 2,
+            'job_recruiter_id' => 2,
         ]);
     }
 }

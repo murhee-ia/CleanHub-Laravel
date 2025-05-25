@@ -28,9 +28,9 @@ class Job extends Model
         'media_paths' => 'array',
     ];
 
-    public function recruiter()
+    public function job_recruiter()
     {
-        return $this->belongsTo(User::class, 'recruiter_id');
+        return $this->belongsTo(User::class, 'job_recruiter_id');
     }
 
     public function job_category()

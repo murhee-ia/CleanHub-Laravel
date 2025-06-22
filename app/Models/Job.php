@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    protected $table = 'cleaning_jobs';
 
     protected $fillable = [
         'title',
@@ -28,8 +27,13 @@ class Job extends Model
         'media_paths' => 'array',
     ];
 
-    public function creator()
+    public function job_recruiter()
     {
-        return $this->belongsTo(User::class, 'recruiter_id');
+        return $this->belongsTo(User::class, 'job_recruiter_id');
+    }
+
+    public function job_category()
+    {
+        return $this->belongsTo(JobCategory::class, 'job_category_id');
     }
 }

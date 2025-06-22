@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cleaning_jobs', function (Blueprint $table) {
+        Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('title', 225);
             $table->foreignId('job_category_id')
                 ->constrained('job_categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('recruiter_id')
+            $table->foreignId('job_recruiter_id')
                 ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('full_address');
             $table->string('schedule');
             $table->string('payment');
-            $table->json('media_paths');
+            $table->json('media_paths')->nullable();
             $table->boolean('approved_status')->default(false);
             $table->boolean('application_status')->default(true);
             $table->boolean('rate_status')->default(false);

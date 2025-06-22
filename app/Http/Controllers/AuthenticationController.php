@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\Password;
 
 class AuthenticationController extends Controller
@@ -81,4 +82,44 @@ class AuthenticationController extends Controller
 
         return response(204);
     }
+
+    public function updateUserInfo(Request $request) {
+        $user = $request->user();
+
+        $field = $request->input('field');
+        $value = $request->input('value');
+
+        $request->validate([
+            'field' => 'required|string|in:email,bio,location',
+            'value' => 'required|string|max:225',
+        ]);
+
+        $user->{$field} = $value;
+        $user->save();
+
+        return response()->json($user);
+    }
+
+    public function updateProfilePicture(Request $request) {
+        $user = $request->user();
+
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Delete old image if it exists
+        if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+
+        // Store new image
+        $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+
+        // Update user
+        $user->profile_picture = Storage::url($path);
+        $user->save();
+
+        return response()->json($user);
+    }
+
 }

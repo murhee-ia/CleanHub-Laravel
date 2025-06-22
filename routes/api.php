@@ -12,22 +12,22 @@ Route::prefix('/auth')->controller(AuthenticationController::class)->group(funct
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::controller(AuthenticationController::class)->group(function() {
-      Route::post('/logout', 'logoutUser');
-      Route::post('/refresh', 'refresh');
-      Route::put('/update-password', 'updateUserPassword');
-    });
+  Route::controller(AuthenticationController::class)->group(function() {
+    Route::post('/logout', 'logoutUser');
+    Route::post('/refresh', 'refresh');
+    Route::put('/update-password', 'updateUserPassword');
+  });
 
-    Route::prefix('/jobs')->controller(JobsController::class)->group(function() {
-      Route::get('/all', 'getAllJobs');
-      
-    });
+  Route::prefix('/jobs')->controller(JobsController::class)->group(function() {
+    Route::get('/all', 'getAllJobs');
+    
+  });
 
-    Route::prefix('/job')->controller(JobController::class)->group(function() {
-      Route::get('/', 'getTheJob');
-      Route::post('/', 'createJob');
-      Route::put('/', 'updateJob');
-      Route::delete('/', 'deleteJob');
-    });
+  Route::prefix('/job')->controller(JobController::class)->group(function() {
+    Route::get('/', 'getTheJob');
+    Route::post('/', 'createJob');
+    Route::put('/', 'updateJob');
+    Route::delete('/', 'deleteJob');
+  });
     
 });

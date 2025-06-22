@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use App\Http\Resources\RecruiterResource;
 
 class JobsController extends Controller
 {
@@ -38,13 +39,7 @@ class JobsController extends Controller
             ->map(function($job) {
                 $job = $job->toArray();
                 $job['job_category'] = $job['job_category']['title'];
-                $job['job_recruiter'] = [
-                    'id' => $job['job_recruiter']['id'],
-                    'full_name' => $job['job_recruiter']['full_name'],
-                    'user_name' => $job['job_recruiter']['user_name'],
-                    'email' => $job['job_recruiter']['email'],
-                    'profile_picture' => $job['job_recruiter']['profile_picture'],
-                ];
+                $job['job_recruiter'] = new RecruiterResource($job['job_recruiter']);
                 unset($job['job_category_id']);
                 unset($job['job_recruiter_id']);
                 return ($job);

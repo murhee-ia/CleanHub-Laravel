@@ -15,7 +15,6 @@ class AuthenticationController extends Controller
             'user_name' => 'required|max:60',
             'email' => 'required|email|unique:users',
             'password' => ['required','string','min:8','regex:/[A-Z]/','confirmed'],
-            'remember' => 'boolean',
         ]);
 
         try {
@@ -49,7 +48,8 @@ class AuthenticationController extends Controller
         $token = $user->createToken($user->user_name, ['*'], $tokenExpiration);
 
         return response([
-            'user' => $user,
+            'user' => $user->only([
+                'full_name', 'user_name', 'role', 'profile_picture']),
             'token' => $token->plainTextToken,
             'tokenExpiration' => $tokenExpiration,
         ], 200);
@@ -64,7 +64,9 @@ class AuthenticationController extends Controller
         $request->user()->tokens()->delete();
         $token = $request->user()->createToken($request->user()->user_name, ['*'], now()->addDay());
 
-        return response(201)->withCookie('auth_token', $token->plainTextToken, null, '/', null, true, true, false, 'Strict');
+        return response(201)->json([
+            'token' => $token->plainTextToken,
+        ], 201)->withCookie('auth_token', $token->plainTextToken, null, '/', null, true, true, false, 'Strict');
     }
 
     public function updateUserPassword(Request $request) {

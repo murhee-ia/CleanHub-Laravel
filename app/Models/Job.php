@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Job extends Model
 {
-    protected $table = 'cleaning_jobs';
 
     protected $fillable = [
         'title',

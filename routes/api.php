@@ -12,14 +12,19 @@ Route::prefix('/auth')->controller(AuthenticationController::class)->group(funct
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-  Route::get('/user', function (Request $request) {
-    return $request->user();
-  });
 
   Route::controller(AuthenticationController::class)->group(function() {
     Route::post('/logout', 'logoutUser');
     Route::post('/refresh', 'refresh');
     Route::put('/update-password', 'updateUserPassword');
+
+    Route::prefix('/user')->group(function () {
+      Route::get('/', function (Request $request) {
+        return $request->user();
+      });
+      Route::put('/update/info', 'updateUserInfo');
+      Route::post('/update/profile-picture', 'updateProfilePicture');
+    });
   });
 
   Route::prefix('/jobs')->controller(JobsController::class)->group(function() {

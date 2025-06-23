@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
   Route::prefix('/jobs')->controller(JobsController::class)->group(function() {
     Route::get('/all', 'getAllJobs');
+    Route::get('/categories', 'getJobCategories');
+    Route::get('/saved', 'getSavedJobs');
   });
 
   Route::prefix('/job')->controller(JobController::class)->group(function() {
@@ -36,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/', 'createJob');
     Route::put('/', 'updateJob');
     Route::delete('/', 'deleteJob');
+    Route::put('/save', 'saveJob');
   });
     
 });

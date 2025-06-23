@@ -59,4 +59,18 @@ class JobController extends Controller
             'message' => "Sorry. You cannot delete posted jobs."
         ]);
     }
+
+    public function saveJob(Request $request) {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'saved' => 'required|array'
+        ]);
+        
+        $newSavedJobs = array_map('intval', $validated['saved'] ?? []);
+        $user->saved = $newSavedJobs;
+        $user->save();
+
+        return response()->json($user->fresh());
+    }
 }

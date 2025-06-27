@@ -31,14 +31,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/all', 'getAllJobs');
     Route::get('/categories', 'getJobCategories');
     Route::get('/saved', 'getSavedJobs');
+    Route::get('/user-posts', 'getUserJobPosts');
+    Route::get('/user-applications', 'getUserJobApplications');
   });
 
   Route::prefix('/job')->controller(JobController::class)->group(function() {
     Route::get('/{jobID}', 'getTheJob');
     Route::post('/', 'createJob');
-    Route::put('/', 'updateJob');
+    Route::put('/{jobID}', 'updateJob');
     Route::delete('/', 'deleteJob');
-    Route::put('/save', 'saveJob');
+    Route::put('/save', 'saveTheJob');
+    Route::post('/apply/{jobID}', 'applyTheJob');
   });
     
 });

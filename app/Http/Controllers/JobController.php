@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\RecruiterResource;
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -59,10 +60,28 @@ class JobController extends Controller
         ]);
     }
 
-    public function updateJob(Request $request) {
-        return response()->json([
-            'message' => "Jobs posted already cannot be edited anymore."
+    public function updateJob(Request $request, $jobID) {
+        $validated = $request->validate([
+            'application_status' => 'required|boolean',
         ]);
+
+        $job = Job::findOrFail($jobID);
+
+        if ($request->user()->id !== $job->job_recruiter_id) {
+            return response()->json([
+                'message' => 'Unauthorized',
+                'job' => $job,
+            ], 403);
+        }
+
+        $job->application_status = $validated['application_status'];
+        $job->save();
+
+        return response()->json([
+            'message' => 'Application status updated successfully',
+            'job' => $job,
+        ], 200);
+
     }
 
     public function delete(Request $request) {
@@ -71,7 +90,7 @@ class JobController extends Controller
         ]);
     }
 
-    public function saveJob(Request $request) {
+    public function saveTheJob(Request $request) {
         $user = $request->user();
 
         $validated = $request->validate([
@@ -83,5 +102,42 @@ class JobController extends Controller
         $user->save();
 
         return response()->json($user->fresh());
+    }
+
+    public function applyTheJob(Request $request, $jobID) {
+        $user = $request->user();
+        $job = Job::findOrFail($jobID);
+
+        $job_application = DB::table('job_applications')->where('job_id', $jobID)->first();
+
+        if ($job_application) {
+            $applicants = json_decode($job_application->applicants ?? '[]', true);
+
+            if (in_array($user->id, $applicants)) {
+                return response()->json([
+                    'message' => 'You have already applied for this job'
+                ]);
+            }
+
+            $applicants[] = $user->id;
+            DB::table('job_applications')
+                ->where('job_id', $jobID)
+                ->update([
+                    'applicants' => json_encode($applicants),
+                    'updated_at' => now(),
+                ]);
+        } else {
+            DB::table('job_applications')->insert([
+                'job_recruiter_id' => $job->job_recruiter_id,
+                'job_id' => $jobID,
+                'applicants' => json_encode([$user->id]),
+                'chosen_applicants' => json_encode([]),
+                'ratings' => null,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        return response()->json(['message' => 'Job application successful'], 200);
     }
 }

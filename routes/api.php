@@ -34,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
   });
 
   Route::prefix('/job')->controller(JobController::class)->group(function() {
-    Route::get('/', 'getTheJob');
+    Route::get('/{jobID}', 'getTheJob');
     Route::post('/', 'createJob');
     Route::put('/', 'updateJob');
     Route::delete('/', 'deleteJob');

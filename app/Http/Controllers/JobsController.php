@@ -82,4 +82,27 @@ class JobsController extends Controller
         return response()->json($jobs);
     }
 
+    public function getUserJobPosts(Request $request) {
+        $user = $request->user();
+
+        $jobs = Job::with(['job_recruiter', 'job_category'])
+            ->where('job_recruiter_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($job) {
+                $job = $job->toArray();
+                $job['job_category'] = $job['job_category']['title'];
+                $job['job_recruiter'] = new RecruiterResource($job['job_recruiter']);
+                unset($job['job_category_id']);
+                unset($job['job_recruiter_id']);
+                return ($job);
+            });
+
+        return response()->json($jobs);
+    }
+
+    public function getUserJobApplications(Request $request) {
+
+    }
+
 };

@@ -15,6 +15,7 @@ class RecruiterResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this['id'],
             'full_name' => $this['full_name'],
             'user_name' => $this['user_name'],
             'email' => $this['email'],
